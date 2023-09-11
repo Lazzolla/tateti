@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TA-TE-TI</title>
+  </head>
+  <body>
+    <h1>Ta-te-ti</h1>
+    <div class="containerStyles" id="container"></div>
+    <h2 id="currentTurn">Es el turno de X</h2>
+    <button onclick="reset()">Reinicia el juego</button>
+    <style>
+      .containerStyles {
+        display: flex;
+        flex-wrap: wrap;
+        width: 510px;
+        height: 510px;
+      }
+
+      .smallContainers {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid rgb(0, 0, 0);
+        box-sizing: border-box;
+        width: 170px;
+        height: 170px;
+        background-color: red;
+      }
+      .simbol {
+        font-size: 160px;
+      }
+    </style>
+    <script>
+      let turn = "X";
+      let isVictoryAchieved = false;
+      window.onload = function () {
+        //TODO: use the for cicle to create smallContainers
+        //for examples, check https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for
+        // You should insert the following children into the container div:
+        // <div
+        //   class="smallContainers"
+        //   id=`smallContainer${id}`
+        // ></div>
+        //To add the onclick you can you use the following:
+        // div.onclick = function () {
+        //   appendSymbol(`smallContainer${x + 1}`);
+        // };
+      };
+      function appendSymbol(containerId) {
+        if (
+          !isVictoryAchieved &&
+          !document.getElementById(containerId).hasChildNodes()
+        ) {
+          const newSymbol = document.createElement("span");
+          newSymbol.className = "simbol";
+          newSymbol.innerText = turn;
+          document.getElementById(containerId).appendChild(newSymbol);
+          const isVictory = checkVictoryCondition();
+          if (isVictory) {
+            document.getElementById(isVictory[0]).style.backgroundColor =
+              "green";
+            document.getElementById(isVictory[1]).style.backgroundColor =
+              "green";
+            document.getElementById(isVictory[2]).style.backgroundColor =
+              "green";
+            isVictoryAchieved = true;
+          }
+          if (turn === "X") {
+            if (isVictoryAchieved) {
+              document.getElementById("currentTurn").innerText = "Gana X";
+            } else {
+              turn = "O";
+              document.getElementById("currentTurn").innerText =
+                "Es el turno de O";
+            }
+          } else {
+            if (isVictoryAchieved) {
+              document.getElementById("currentTurn").innerText = "Gana O";
+            } else {
+              turn = "X";
+              document.getElementById("currentTurn").innerText =
+                "Es el turno de X";
+            }
+          }
+        }
+      }
+      function checkLine(value1, value2, value3) {
+        if (value1 && value2 && value3) {
+          if (value1 === value2 && value2 === value3) return true;
+          else return false;
+        } else return false;
+      }
+      function getElement(id) {
+        return document.getElementById(`smallContainer${id}`)?.firstChild
+          ?.innerText;
+      }
+      function checkVictoryCondition() {
+        const container1Value = getElement("1");
+        const container2Value = getElement("2");
+        const container3Value = getElement("3");
+        const container4Value = getElement("4");
+        const container5Value = getElement("5");
+        const container6Value = getElement("6");
+        const container7Value = getElement("7");
+        const container8Value = getElement("8");
+        const container9Value = getElement("9");
+
+        const condition1 = checkLine(
+          container1Value,
+          container2Value,
+          container3Value
+        );
+        const condition2 = checkLine(
+          container4Value,
+          container5Value,
+          container6Value
+        );
+        const condition3 = checkLine(
+          container7Value,
+          container8Value,
+          container9Value
+        );
+        const condition4 = checkLine(
+          container1Value,
+          container4Value,
+          container7Value
+        );
+        const condition5 = checkLine(
+          container2Value,
+          container5Value,
+          container8Value
+        );
+        const condition6 = checkLine(
+          container3Value,
+          container6Value,
+          container9Value
+        );
+        const condition7 = checkLine(
+          container1Value,
+          container5Value,
+          container9Value
+        );
+        const condition8 = checkLine(
+          container3Value,
+          container5Value,
+          container7Value
+        );
+        if (condition1)
+          return ["smallContainer1", "smallContainer2", "smallContainer3"];
+        if (condition2)
+          return ["smallContainer4", "smallContainer5", "smallContainer6"];
+        if (condition3)
+          return ["smallContainer7", "smallContainer8", "smallContainer9"];
+        if (condition4)
+          return ["smallContainer1", "smallContainer4", "smallContainer7"];
+        if (condition5)
+          return ["smallContainer2", "smallContainer5", "smallContainer8"];
+        if (condition6)
+          return ["smallContainer3", "smallContainer6", "smallContainer9"];
+        if (condition7)
+          return ["smallContainer1", "smallContainer5", "smallContainer9"];
+        if (condition8)
+          return ["smallContainer3", "smallContainer5", "smallContainer7"];
+        return undefined;
+      }
+      function reset() {
+        location.reload();
+      }
+    </script>
+  </body>
+</html>
